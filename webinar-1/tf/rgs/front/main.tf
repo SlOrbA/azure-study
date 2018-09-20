@@ -118,14 +118,14 @@ resource "azurerm_application_gateway" "front" {
     path_rule {
       name = "pbr.contoso.com_first"
       paths = ["/first/*"]
-      backend_address_pool_name = "${local.awg_clusters_name}-beap-first"
-      backend_http_settings_name = "${local.awg_clusters_name}-be-htst"
+      backend_address_pool_name = "Clusteri-beap-first"
+      backend_http_settings_name = "Clusteri-be-htst"
     }
     path_rule {
       name = "pbr.contoso.com_second"
       paths = ["/second/*"]
-      backend_address_pool_name = "${local.awg_clusters_name}-beap-second"
-      backend_http_settings_name = "${local.awg_clusters_name}-be-htst"
+      backend_address_pool_name = "Clusteri-beap-second"
+      backend_http_settings_name = "Clusteri-be-htst"
     }
   }
 }

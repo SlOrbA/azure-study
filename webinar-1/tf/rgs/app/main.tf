@@ -17,12 +17,6 @@ resource "azurerm_subnet" "app" {
   address_prefix       = "10.0.1.0/24"
 }
 
-resource "azurerm_availability_set" "app" {
-  name     = "W1-E6-App-avset"
-  location = "${azurerm_resource_group.app.location}"
-  resource_group_name = "${azurerm_resource_group.app.name}"
-}
-
 resource "azurerm_network_interface" "app" {
   name = "W1-E6-App-nic"
   location = "${azurerm_resource_group.app.location}"
@@ -35,34 +29,69 @@ resource "azurerm_network_interface" "app" {
   }
 }
 
-resource "azurerm_virtual_machine" "app" {
-  name = "W1-E6-App-vm"
-  location = "${azurerm_resource_group.app.location}"
+resource "azurerm_storage_account" "app" {
+  name                     = "w1e6appstrg"
+  resource_group_name      = "${azurerm_resource_group.app.name}"
+  location                 = "${azurerm_resource_group.app.location}"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "app" {
+  name                  = "w1e6appvhds"
+  resource_group_name   = "${azurerm_resource_group.app.name}"
+  storage_account_name  = "${azurerm_storage_account.app.name}"
+  container_access_type = "private"
+}
+
+resource "azurerm_virtual_machine_scale_set" "app" {
+  name                = "W1-E6-App-VM-scale-set"
+  location            = "${azurerm_resource_group.app.location}"
   resource_group_name = "${azurerm_resource_group.app.name}"
-  network_interface_ids = ["${azurerm_network_interface.app.id}"]
-  vm_size = "Standard_A1_v2"
+  upgrade_policy_mode = "Manual"
 
-  storage_image_reference {
-    publisher = "Microsoft"
-    offer = ""
-    sku = ""
-    version = "latesti"
-  }
-
-  storage_os_disk {
-    name = "AppOSDisk1"
-    caching = "ReadWrite"
-    create_option = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  sku {
+    name     = "Standard_F2"
+    tier     = "Standard"
+    capacity = 2
   }
 
   os_profile {
-    computer_name = "appserver"
-    admin_username = "testi"
-    admin_password = "fs,lwe,ölv,lwe"
+    computer_name_prefix = "W1-E6-App-VM"
+    admin_username       = "myadmin"
+    admin_password       = "KPaszxcvasdfasdf"
   }
 
-  os_profile_windows_config {
-    provision_vm_agent = true
+  os_profile_linux_config {
+    disable_password_authentication = true
+
+    ssh_keys {
+      path     = "/home/myadmin/.ssh/authorized_keys"
+      key_data = "${file("~/.ssh/authorized_keys")}"
+    }
+  }
+
+  network_profile {
+    name    = "NetworkProfile"
+    primary = true
+
+    ip_configuration {
+      name      = "IPConfiguration"
+      subnet_id = "${azurerm_subnet.app.id}"
+    }
+  }
+
+  storage_profile_os_disk {
+    name           = "osDiskProfile"
+    caching        = "ReadWrite"
+    create_option  = "FromImage"
+    vhd_containers = ["${azurerm_storage_account.app.primary_blob_endpoint}${azurerm_storage_container.app.name}"]
+  }
+
+  storage_profile_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "16.04-LTS"
+    version   = "latest"
   }
 }
