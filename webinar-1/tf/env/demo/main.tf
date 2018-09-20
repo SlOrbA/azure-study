@@ -1,3 +1,7 @@
+module "front" {
+  source = "../../rgs/front"
+}
+
 module "app" {
   source = "../../rgs/app"
 }
