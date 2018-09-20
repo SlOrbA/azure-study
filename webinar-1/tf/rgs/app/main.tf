@@ -23,12 +23,40 @@ resource "azurerm_network_security_group" "app" {
   resource_group_name = "${azurerm_resource_group.app.name}"
 }
 
-resource "azurerm_network_security_rule" "app" {
-  name                        = "all"
+resource "azurerm_network_security_rule" "app_http" {
+  name                        = "AllowHTTP"
   priority                    = 100
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.app.name}"
+  network_security_group_name = "${azurerm_network_security_group.app.name}"
+}
+
+resource "azurerm_network_security_rule" "app_https" {
+  name                        = "AllowHTTPS"
+  priority                    = 110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.app.name}"
+  network_security_group_name = "${azurerm_network_security_group.app.name}"
+}
+
+resource "azurerm_network_security_rule" "app_deny_in" {
+  name                        = "DenyAllInBound"
+  priority                    = 4096
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
   source_port_range           = "*"
   destination_port_range      = "*"
   source_address_prefix       = "*"

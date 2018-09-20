@@ -23,12 +23,26 @@ resource "azurerm_network_security_group" "db" {
   resource_group_name = "${azurerm_resource_group.db.name}"
 }
 
-resource "azurerm_network_security_rule" "db" {
-  name                        = "all"
+resource "azurerm_network_security_rule" "db_sql_in" {
+  name                        = "AllowSQL"
   priority                    = 100
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "1433"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.db.name}"
+  network_security_group_name = "${azurerm_network_security_group.db.name}"
+}
+
+resource "azurerm_network_security_rule" "db_deny_in" {
+  name                        = "DenyAllInBound"
+  priority                    = 4096
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
   source_port_range           = "*"
   destination_port_range      = "*"
   source_address_prefix       = "*"
