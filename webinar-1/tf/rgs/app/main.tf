@@ -83,6 +83,8 @@ resource "azurerm_virtual_machine_scale_set" "app" {
     name    = "NetworkProfile"
     primary = true
 
+    network_security_group_id = "${azurerm_network_security_group.app.id}"
+
     ip_configuration {
       name      = "IPConfiguration"
       subnet_id = "${azurerm_subnet.app.id}"
