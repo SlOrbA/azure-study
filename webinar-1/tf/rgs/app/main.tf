@@ -17,16 +17,24 @@ resource "azurerm_subnet" "app" {
   address_prefix       = "10.0.1.0/24"
 }
 
-resource "azurerm_network_interface" "app" {
-  name = "W1-E6-App-nic"
-  location = "${azurerm_resource_group.app.location}"
+resource "azurerm_network_security_group" "app" {
+  name                = "W1-E6-App-NSG"
+  location            = "${azurerm_resource_group.app.location}"
   resource_group_name = "${azurerm_resource_group.app.name}"
+}
 
-  ip_configuration {
-    name                          = "AppConfiguration"
-    subnet_id                     = "${azurerm_subnet.app.id}"
-    private_ip_address_allocation = "dynamic"
-  }
+resource "azurerm_network_security_rule" "app" {
+  name                        = "all"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.app.name}"
+  network_security_group_name = "${azurerm_network_security_group.app.name}"
 }
 
 resource "azurerm_storage_account" "app" {
@@ -51,9 +59,9 @@ resource "azurerm_virtual_machine_scale_set" "app" {
   upgrade_policy_mode = "Manual"
 
   sku {
-    name     = "Standard_F2"
+    name     = "Standard_A1"
     tier     = "Standard"
-    capacity = 2
+    capacity = 1
   }
 
   os_profile {

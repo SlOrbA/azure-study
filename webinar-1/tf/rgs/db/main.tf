@@ -17,6 +17,26 @@ resource "azurerm_subnet" "db" {
   address_prefix       = "10.0.1.0/24"
 }
 
+resource "azurerm_network_security_group" "db" {
+  name                = "W1-E6-DB-NSG"
+  location            = "${azurerm_resource_group.db.location}"
+  resource_group_name = "${azurerm_resource_group.db.name}"
+}
+
+resource "azurerm_network_security_rule" "db" {
+  name                        = "all"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.db.name}"
+  network_security_group_name = "${azurerm_network_security_group.db.name}"
+}
+
 resource "azurerm_storage_account" "db" {
   name                     = "w1e6dbstrg"
   resource_group_name      = "${azurerm_resource_group.db.name}"
@@ -39,9 +59,9 @@ resource "azurerm_virtual_machine_scale_set" "db" {
   upgrade_policy_mode = "Manual"
 
   sku {
-    name     = "Standard_F2"
+    name     = "Standard_A1"
     tier     = "Standard"
-    capacity = 2
+    capacity = 1
   }
 
   os_profile {

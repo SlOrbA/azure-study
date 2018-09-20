@@ -104,7 +104,7 @@ resource "azurerm_application_gateway" "front" {
   }
 
   request_routing_rule {
-    name               = "${azurerm_virtual_network.front.name}-rqrt"
+    name               = "${azurerm_virtual_network.front.name}-rqrt-pathbased"
     rule_type          = "PathBasedRouting"
     http_listener_name = "${azurerm_virtual_network.front.name}-httplstn-pbr.contoso.com"
     url_path_map_name  = "pbr.contoso.com"
@@ -118,14 +118,14 @@ resource "azurerm_application_gateway" "front" {
     path_rule {
       name = "pbr.contoso.com_first"
       paths = ["/first/*"]
-      backend_address_pool_name = "Clusteri-beap-first"
-      backend_http_settings_name = "Clusteri-be-htst"
+      backend_address_pool_name = "${azurerm_virtual_network.front.name}-beap-first"
+      backend_http_settings_name = "${azurerm_virtual_network.front.name}-be-htst"
     }
     path_rule {
       name = "pbr.contoso.com_second"
       paths = ["/second/*"]
-      backend_address_pool_name = "Clusteri-beap-second"
-      backend_http_settings_name = "Clusteri-be-htst"
+      backend_address_pool_name = "${azurerm_virtual_network.front.name}-beap-second"
+      backend_http_settings_name = "${azurerm_virtual_network.front.name}-be-htst"
     }
   }
 }
