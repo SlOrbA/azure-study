@@ -37,20 +37,6 @@ resource "azurerm_network_security_rule" "db_sql_in" {
   network_security_group_name = "${azurerm_network_security_group.db.name}"
 }
 
-resource "azurerm_network_security_rule" "db_deny_in" {
-  name                        = "DenyAllInBound"
-  priority                    = 4096
-  direction                   = "Inbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = "${azurerm_resource_group.db.name}"
-  network_security_group_name = "${azurerm_network_security_group.db.name}"
-}
-
 resource "azurerm_storage_account" "db" {
   name                     = "w1e6dbstrg"
   resource_group_name      = "${azurerm_resource_group.db.name}"

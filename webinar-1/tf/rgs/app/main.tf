@@ -51,20 +51,6 @@ resource "azurerm_network_security_rule" "app_https" {
   network_security_group_name = "${azurerm_network_security_group.app.name}"
 }
 
-resource "azurerm_network_security_rule" "app_deny_in" {
-  name                        = "DenyAllInBound"
-  priority                    = 4096
-  direction                   = "Inbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = "${azurerm_resource_group.app.name}"
-  network_security_group_name = "${azurerm_network_security_group.app.name}"
-}
-
 resource "azurerm_storage_account" "app" {
   name                     = "w1e6appstrg"
   resource_group_name      = "${azurerm_resource_group.app.name}"
