@@ -1,0 +1,105 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "publicIPAddresses_publicIP_domainNameLabel": {
+            "value": null
+        },
+        "publicIPAddresses_publicIP_name": {
+            "value": null
+        },
+        "virtualNetworks_backendVnet_name": {
+            "value": null
+        },
+        "autoscalesettings_Autoscale_name": {
+            "value": null
+        },
+        "virtualNetworks_frontendVnet_name": {
+            "value": null
+        },
+        "applicationGateways_appGateway_name": {
+            "value": null
+        },
+        "virtualMachineScaleSets_backend_name": {
+            "value": null
+        },
+        "virtualMachineScaleSets_frontend_name": {
+            "value": null
+        },
+        "networkSecurityGroups_backendNSG_name": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_name": {
+            "value": null
+        },
+        "networkSecurityGroups_frontendNSG_name": {
+            "value": null
+        },
+        "subnets_appGateway_name": {
+            "value": null
+        },
+        "subnets_backendSubnet_name": {
+            "value": null
+        },
+        "subnets_frontendSubnet_name": {
+            "value": null
+        },
+        "securityRules_AllowSQL_name": {
+            "value": null
+        },
+        "securityRules_AllowHTTP_name": {
+            "value": null
+        },
+        "securityRules_AllowHTTPS_name": {
+            "value": null
+        },
+        "securityRules_DenyInternet_name": {
+            "value": null
+        },
+        "inboundNatRules_backendLoadBalancerNatPool.2_name": {
+            "value": null
+        },
+        "inboundNatRules_backendLoadBalancerNatPool.5_name": {
+            "value": null
+        },
+        "inboundNatRules_backendLoadBalancerNatPool.6_name": {
+            "value": null
+        },
+        "applicationGateways_appGateway_id": {
+            "value": null
+        },
+        "applicationGateways_appGateway_id_1": {
+            "value": null
+        },
+        "applicationGateways_appGateway_id_2": {
+            "value": null
+        },
+        "applicationGateways_appGateway_id_3": {
+            "value": null
+        },
+        "applicationGateways_appGateway_id_4": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_1": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_2": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_3": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_4": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_5": {
+            "value": null
+        },
+        "loadBalancers_backendLoadBalancer_id_6": {
+            "value": null
+        }
+    }
+}
