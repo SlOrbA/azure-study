@@ -9,3 +9,9 @@ module "app" {
 module "db" {
   source = "../../rgs/db"
 }
+
+module "ping" {
+  source = "../../rgs/ping"
+  env = "demo"
+  location = "northeurope"
+}
