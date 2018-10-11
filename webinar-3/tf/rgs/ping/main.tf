@@ -50,7 +50,7 @@ resource "azurerm_function_app" "ping" {
   }
 
   provisioner "local-exec" {
-    command     = "git clone $repo ${self.name}"
+    command     = "git clone https://github.com/Azure-Samples/functions-quickstart.git ${self.name}"
     working_dir = ".repos"
 
     environment {
